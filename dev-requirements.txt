@@ -1,0 +1,5 @@
+pydeps
+pylint
+mypy
+build
+twine

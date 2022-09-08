@@ -33,4 +33,4 @@ jobs:
           architecture: x64
       - uses: pre-commit/action@v3.0.0
         with:
-          args: --all -c .pre-commit-config-3.6.yaml
+          extra_args: --all -c .pre-commit-config-3.6.yaml

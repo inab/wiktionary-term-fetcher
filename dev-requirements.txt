@@ -3,3 +3,5 @@ pylint
 mypy
 build
 twine
+black
+pre-commit

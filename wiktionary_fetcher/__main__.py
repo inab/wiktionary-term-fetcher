@@ -19,32 +19,57 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
+import argparse
 import sys
-from . import *
+from typing import TextIO
+from . import (
+    store_terms,
+    Lang,
+    TermType,
+)
 
-def main():
+
+def main() -> None:
     ap = argparse.ArgumentParser(
         description="Wiktionary term fetcher",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    ap.add_argument('--lang', dest="lang", help=f"Language to be queried from Wiktionary. Shortcuts for some common languages ({', '.join(map(lambda l: l.value, Lang))}) are accepted. You can also use any valid language name being used in English Wiktionary (for instance, 'French' or 'Basque').", default=Lang.English.value)
-    ap.add_argument('--terms', dest="terms", help="Terms type to be queried from Wiktionary", type=TermType.argtype, choices=TermType, default=TermType.Noun)
-    ap.add_argument('output', help="Output file. If the name is '-', standard output will be used")
+    ap.add_argument(
+        "--lang",
+        dest="lang",
+        help=f"Language to be queried from Wiktionary. Shortcuts for some common languages ({', '.join(map(lambda l: l.value, Lang))}) are accepted. You can also use any valid language name being used in English Wiktionary (for instance, 'French' or 'Basque').",
+        default=Lang.English.value,
+    )
+    ap.add_argument(
+        "--terms",
+        dest="terms",
+        help="Terms type to be queried from Wiktionary",
+        type=TermType.argtype,  # type:ignore
+        choices=TermType,
+        default=TermType.Noun,
+    )
+    ap.add_argument(
+        "output", help="Output file. If the name is '-', standard output will be used"
+    )
     args = ap.parse_args()
-    
-    print(f"Writing all the {args.terms} in {args.lang} to {args.output}", file=sys.stderr)
-    
+
+    print(
+        f"Writing all the {args.terms} in {args.lang} to {args.output}", file=sys.stderr
+    )
+
+    outH: TextIO
     if args.output != "-":
         outH = open(args.output, mode="w", encoding="utf-8")
     else:
         outH = sys.stdout
-    
+
     try:
         store_terms(args.lang, args.terms, outH)
     finally:
         # Assuring the stream is properly closed
         if outH != sys.stdout:
             outH.close()
+
 
 if __name__ == "__main__":
     main()

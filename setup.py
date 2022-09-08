@@ -22,7 +22,7 @@
 import re
 import os
 import sys
-import setuptools
+import setuptools  # type: ignore
 
 # In this way, we are sure we are getting
 # the installer's version of the library
@@ -59,15 +59,14 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/inab/wiktionary-term-fetcher",
-	project_urls={
-		"Bug Tracker": "https://github.com/inab/wiktionary-term-fetcher/issues"
-	},
+    project_urls={
+        "Bug Tracker": "https://github.com/inab/wiktionary-term-fetcher/issues"
+    },
     packages=setuptools.find_packages(),
+    package_data={"wiktionary_fetcher": ["py.typed"]},
     install_requires=requirements,
-    entry_points = {
-        "console_scripts": [
-            "wiktionary-fetcher=wiktionary_fetcher.__main__:main"
-        ]
+    entry_points={
+        "console_scripts": ["wiktionary-fetcher=wiktionary_fetcher.__main__:main"]
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -75,5 +74,5 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
         "Operating System :: OS Independent",
     ],
-	python_requires=">=3.6",
+    python_requires=">=3.6",
 )

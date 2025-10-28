@@ -24,34 +24,41 @@ __copyright__ = "© 2022 Barcelona Supercomputing Center (BSC), ES"
 __license__ = "LGPL-2.1"
 
 # https://www.python.org/dev/peps/pep-0396/
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 import argparse
 import enum
 import json
+
 from typing import (
-    Iterator,
-    Mapping,
-    MutableMapping,
     NamedTuple,
-    Optional,
-    TextIO,
-    Union,
+    TYPE_CHECKING,
 )
+
+if TYPE_CHECKING:
+    from typing import (
+        Iterator,
+        Mapping,
+        MutableMapping,
+        Optional,
+        TextIO,
+        Union,
+    )
 
 import urllib.parse
 import urllib.request
+import user_agent
 
 
 class ArgTypeMixin(enum.Enum):
     @classmethod
-    def argtype(cls, s: str) -> enum.Enum:
+    def argtype(cls, s: "str") -> "enum.Enum":
         try:
             return cls(s)
         except:
             raise argparse.ArgumentTypeError(f"{s!r} is not a valid {cls.__name__}")
 
-    def __str__(self) -> str:
+    def __str__(self) -> "str":
         return str(self.value)
 
 
@@ -73,8 +80,8 @@ class Lang(ArgTypeMixin):
 
 
 class WiktionarySetup(NamedTuple):
-    lang: Lang
-    category_prefix: str
+    lang: "Lang"
+    category_prefix: "str"
 
 
 EN_setup = WiktionarySetup(lang=Lang.English, category_prefix="English")
@@ -85,7 +92,7 @@ CA_setup = WiktionarySetup(lang=Lang.Catalan, category_prefix="Catalan")
 
 DE_setup = WiktionarySetup(lang=Lang.German, category_prefix="German")
 
-WiktionarySetups: Mapping[Lang, WiktionarySetup] = {
+WiktionarySetups: "Mapping[Lang, WiktionarySetup]" = {
     EN_setup.lang: EN_setup,
     ES_setup.lang: ES_setup,
     CA_setup.lang: CA_setup,
@@ -96,14 +103,14 @@ WiktionaryEndpointBase = "https://en.wiktionary.org/w/api.php"
 
 
 def fetch_terms(
-    lang: Union[str, Lang], term_type: Union[str, TermType]
-) -> Iterator[str]:
+    lang: "Union[str, Lang]", term_type: "Union[str, TermType]"
+) -> "Iterator[str]":
     # Normalize the term type
     if not isinstance(term_type, TermType):
         term_type = TermType(term_type)
 
     # Normalize the language
-    setup: Optional[WiktionarySetup]
+    setup: "Optional[WiktionarySetup]"
     try:
         if not isinstance(lang, Lang):
             lang = Lang(lang)
@@ -118,7 +125,7 @@ def fetch_terms(
     else:
         category_prefix = setup.category_prefix
 
-    query_params: Optional[MutableMapping[str, str]] = {
+    query_params: "Optional[MutableMapping[str, str]]" = {
         "action": "query",
         "list": "categorymembers",
         "cmtitle": "Category:" + category_prefix + "_" + term_type.value,
@@ -133,6 +140,10 @@ def fetch_terms(
             WiktionaryEndpointBase,
             method="POST",
             data=urllib.parse.urlencode(query_params).encode("utf-8"),
+            headers={
+                "User-Agent": user_agent.generate_user_agent()
+                + f" {__name__}/{__version__}",
+            },
         )
         with urllib.request.urlopen(req) as resp:
             json_terms = json.load(resp)
@@ -152,8 +163,8 @@ def fetch_terms(
 
 
 def store_terms(
-    lang: Union[str, Lang], term_type: Union[str, TermType], outH: TextIO
-) -> int:
+    lang: "Union[str, Lang]", term_type: "Union[str, TermType]", outH: "TextIO"
+) -> "int":
     num_terms = 0
     for term in fetch_terms(lang, term_type):
         outH.write(term)

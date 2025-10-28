@@ -1,22 +1,30 @@
 fail_fast: true
 
 repos:
+  - repo: local
+    hooks:
+      - id: pylint
+        name: Local PyLint
+        language: system
+        require_serial: true
+        types:
+          - python
+        exclude: "^[^/]*env/|dev-[^/]*/|docs/"
+        entry: pylint
+        args: [--source-roots, .]
+      - id: mypy
+        name: Local MyPy
+        language: system
+        types_or:
+          - python
+          - pyi
+        exclude: "/(site-packages|development-[^/]*|docs|node_modules|__pycache__|\\..*)/$"
+        require_serial: true
+        entry: mypy
+        args: [--strict, --show-error-codes, --no-warn-unused-ignores]
+
   - repo: https://github.com/ambv/black
     rev: 22.6.0
     hooks:
       - id: black
         args: [--diff, --check]
-
-  - repo: https://github.com/PyCQA/pylint
-    rev: v2.15.2
-    hooks:
-      - id: pylint
-        args: [--disable=all, --enable=unused-import]
-
-  - repo: https://github.com/jmfernandez/pre-commit_mirrors-mypy
-    rev: v0.971
-    hooks:
-      - id: mypy
-        exclude: ^tests/
-        args: [--strict]
-

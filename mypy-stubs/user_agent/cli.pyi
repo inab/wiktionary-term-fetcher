@@ -1,0 +1,3 @@
+from user_agent import generate_navigator_js as generate_navigator_js
+
+def script_ua() -> None: ...

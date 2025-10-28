@@ -3,7 +3,7 @@
 
 # wiktionary_fetcher, a library to fetch all the available
 # nouns, adjectives or verbs from wiktionary, in different languages.
-# Copyright (C) 2022 Barcelona Supercomputing Center, José M. Fernández
+# Copyright (C) 2022-2025 Barcelona Supercomputing Center, José M. Fernández
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 __author__ = "José M. Fernández <https://orcid.org/0000-0002-4806-5140>"
-__copyright__ = "© 2022 Barcelona Supercomputing Center (BSC), ES"
+__copyright__ = "© 2022-2025 Barcelona Supercomputing Center (BSC), ES"
 __license__ = "LGPL-2.1"
 
 # https://www.python.org/dev/peps/pep-0396/
@@ -47,7 +47,6 @@ if TYPE_CHECKING:
 
 import urllib.parse
 import urllib.request
-import user_agent
 
 
 class ArgTypeMixin(enum.Enum):
@@ -105,6 +104,8 @@ WiktionaryEndpointBase = "https://en.wiktionary.org/w/api.php"
 def fetch_terms(
     lang: "Union[str, Lang]", term_type: "Union[str, TermType]"
 ) -> "Iterator[str]":
+    import user_agent
+
     # Normalize the term type
     if not isinstance(term_type, TermType):
         term_type = TermType(term_type)

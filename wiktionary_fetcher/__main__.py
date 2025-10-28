@@ -3,7 +3,7 @@
 
 # wiktionary_fetcher, a library to fetch all the available
 # nouns, adjectives or verbs from wiktionary, in different languages.
-# Copyright (C) 2022 Barcelona Supercomputing Center, José M. Fernández
+# Copyright (C) 2022-2025 Barcelona Supercomputing Center, José M. Fernández
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,14 @@
 
 import argparse
 import sys
-from typing import TextIO
+from typing import (
+    TYPE_CHECKING,
+)
+
+if TYPE_CHECKING:
+    from typing import (
+        TextIO,
+    )
 from . import (
     store_terms,
     Lang,
@@ -29,7 +36,7 @@ from . import (
 )
 
 
-def main() -> None:
+def main() -> "None":
     ap = argparse.ArgumentParser(
         description="Wiktionary term fetcher",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -57,7 +64,7 @@ def main() -> None:
         f"Writing all the {args.terms} in {args.lang} to {args.output}", file=sys.stderr
     )
 
-    outH: TextIO
+    outH: "TextIO"
     if args.output != "-":
         outH = open(args.output, mode="w", encoding="utf-8")
     else:

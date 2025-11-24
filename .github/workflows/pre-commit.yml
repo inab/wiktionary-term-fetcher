@@ -14,7 +14,7 @@ jobs:
         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13" ]
     name: Pre-commit python ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
@@ -33,7 +33,7 @@ jobs:
         python-version: ["3.6", "3.7"]
     name: Pre-commit python ${{ matrix.python-version }} (deprecated)
     steps:
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
       - name: 
         run: |
           sudo apt-get update
@@ -87,7 +87,7 @@ jobs:
           source ~/.bash_profile
           pyenv install ${{matrix.python-version}}
           pyenv global ${{matrix.python-version}}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install runtime dependencies
         run: |
           source ~/.bash_profile

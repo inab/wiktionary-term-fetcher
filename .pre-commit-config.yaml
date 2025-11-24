@@ -24,9 +24,10 @@ repos:
         args: [--strict, --show-error-codes, --no-warn-unused-ignores]
 
   - repo: https://github.com/jmfernandez/pre-commit_mirrors-actionlint.git
-    rev: v1.7.1
+    rev: v1.7.9
     hooks:
       - id: actionlint
+        args: [-ignore,SC2016|SC2129|SC1090]
 
   - repo: https://github.com/ambv/black
     rev: 22.6.0

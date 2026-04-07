@@ -6,3 +6,4 @@ build
 twine
 black == 22.6.0
 pre-commit
+typing_extensions

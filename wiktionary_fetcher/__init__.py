@@ -358,8 +358,9 @@ def fetch_terms_from_wikidata(
 
 # See https://stackoverflow.com/a/36502089
 
+DEFAULT_TERM_FETCHER: "Final[str]" = "wikidata"
 AvailableFetchers: "Mapping[str, TermFetcherProc]" = {
-    "wikidata": fetch_terms_from_wikidata,
+    DEFAULT_TERM_FETCHER: fetch_terms_from_wikidata,
     "wiktionary": fetch_terms_from_wiktionary,
 }
 

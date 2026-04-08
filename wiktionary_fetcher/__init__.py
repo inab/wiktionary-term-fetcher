@@ -24,7 +24,7 @@ __copyright__ = "© 2022-2026 Barcelona Supercomputing Center (BSC), ES"
 __license__ = "LGPL-2.1"
 
 # https://www.python.org/dev/peps/pep-0396/
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 import argparse
 import enum
@@ -76,8 +76,6 @@ if TYPE_CHECKING:
 
 import urllib.parse
 import urllib.request
-
-import SPARQLWrapper
 
 
 class ArgTypeMixin(enum.Enum):
@@ -227,6 +225,8 @@ def _retriableSPARQLQuery(
     sparql_endpoint: "str" = WIKIDATA_SPARQL_ENDPOINT,
     user_agent: "str" = DEFAULT_USER_AGENT,
 ) -> "SPARQLResult":
+    import SPARQLWrapper
+
     if max_retries < 0:
         max_retries = DEFAULT_MAX_RETRIES
     if request_delay <= 0.0:

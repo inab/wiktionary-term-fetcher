@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.6", "3.7"]
+        python-version: ["3.7"]
     name: Pre-commit python ${{ matrix.python-version }} (deprecated)
     steps:
       - uses: actions/setup-python@v6
@@ -100,9 +100,9 @@ jobs:
           source ~/.bash_profile
           source .env/bin/activate
           case ${{ matrix.python-version }} in
-            3.6)
-              pre_commit_file=.pre-commit-config-3.6.yaml
-              ;;
+            # 3.6)
+            #   pre_commit_file=.pre-commit-config-3.6.yaml
+            #   ;;
             *)
               pre_commit_file=.pre-commit-config.yaml
               ;;

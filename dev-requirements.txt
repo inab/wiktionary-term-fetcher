@@ -4,6 +4,6 @@ pylint >= 2.15.5 ; python_version >= '3.7'
 mypy
 build
 twine
-black == 22.6.0
+black == 23.3.0
 pre-commit
 typing_extensions

@@ -217,6 +217,7 @@ DEFAULT_REQUEST_DELAY: "Final[float]" = 0.25
 DEFAULT_USER_AGENT: "Final[str]" = f"wiktionary-term-fetcher/{__version__} (https://github.com/inab/wiktionary-term-fetcher/)"
 WIKIDATA_SPARQL_ENDPOINT: "Final[str]" = "https://query.wikidata.org/sparql"
 
+
 # This method is borrowed and adapted from
 # https://github.com/inab/opeb-pub-enricher/blob/4a1d53d0bb147ac57b2a3395c716658af7d7555a/opeb_pub_enricher/wikidata_enricher.py#L134-L206
 def _retriableSPARQLQuery(

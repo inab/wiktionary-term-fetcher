@@ -27,13 +27,32 @@ from typing import (
 
 if TYPE_CHECKING:
     from typing import (
+        Any,
+        Optional,
+        Sequence,
         TextIO,
+        Union,
     )
 from . import (
+    DEFAULT_TERM_FETCHER,
     store_terms,
     Lang,
     TermType,
+    AvailableFetchers,
 )
+
+
+# See https://stackoverflow.com/a/36502089
+class DictAction(argparse.Action):
+    def __call__(
+        self,
+        parser: "argparse.ArgumentParser",
+        namespace: "argparse.Namespace",
+        values: "Optional[Union[str, Sequence[Any]]]",
+        option_string: "Optional[str]" = None,
+    ) -> "None":
+        if isinstance(self.choices, dict):
+            setattr(namespace, self.dest, self.choices.get(values, self.default))
 
 
 def main() -> "None":
@@ -44,16 +63,24 @@ def main() -> "None":
     ap.add_argument(
         "--lang",
         dest="lang",
-        help=f"Language to be queried from Wiktionary. Shortcuts for some common languages ({', '.join(map(lambda l: l.value, Lang))}) are accepted. You can also use any valid language name being used in English Wiktionary (for instance, 'French' or 'Basque').",
+        help=f"Language to be queried from. In Wikidata mode, any valid shortcut can be used. In Wiktionary mode, shortcuts for some common languages ({', '.join(map(lambda l: l.value, Lang))}) are accepted. In this last mode, you can also use any valid language name being used in English Wiktionary (for instance, 'French' or 'Basque').",
         default=Lang.English.value,
     )
     ap.add_argument(
         "--terms",
         dest="terms",
-        help="Terms type to be queried from Wiktionary",
+        help="Terms type to be queried from either Wikidata or Wiktionary",
         type=TermType.argtype,  # type:ignore
         choices=TermType,
         default=TermType.Noun,
+    )
+    ap.add_argument(
+        "--fetcher",
+        dest="fetcher",
+        help="Which fetcher should be used",
+        action=DictAction,
+        choices=AvailableFetchers,
+        default=DEFAULT_TERM_FETCHER,
     )
     ap.add_argument(
         "output", help="Output file. If the name is '-', standard output will be used"
@@ -71,7 +98,7 @@ def main() -> "None":
         outH = sys.stdout
 
     try:
-        store_terms(args.lang, args.terms, outH)
+        store_terms(args.lang, args.terms, outH, term_fetcher=args.fetcher)
     finally:
         # Assuring the stream is properly closed
         if outH != sys.stdout:

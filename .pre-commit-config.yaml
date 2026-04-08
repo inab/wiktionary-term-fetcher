@@ -30,7 +30,7 @@ repos:
         args: [-ignore,SC2016|SC2129|SC1090]
 
   - repo: https://github.com/ambv/black
-    rev: 22.6.0
+    rev: 23.3.0
     hooks:
       - id: black
         args: [--diff, --check]

@@ -6,7 +6,7 @@ All the development dependencies are declared at [dev-requirements.txt](dev-requ
 python3 -m venv .pyenv
 source .pyenv/bin/activate
 pip install --upgrade pip wheel
-pip install -r dev-requirements.txt
+pip install -r requirements.txt -r dev-requirements.txt
 ```
 
 One of these dependencies is [pre-commit](https://pre-commit.com/), whose rules are declared at [.pre-commit-config.yaml](.pre-commit-config.yaml).

@@ -15,7 +15,7 @@ jobs:
     name: Pre-commit python ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
@@ -33,7 +33,7 @@ jobs:
         python-version: ["3.7"]
     name: Pre-commit python ${{ matrix.python-version }} (deprecated)
     steps:
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
       - name: 
         run: |
           sudo apt-get update
